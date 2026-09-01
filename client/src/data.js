@@ -232,8 +232,8 @@ export const PROJECTS = [
     title: 'Nambiar District 25',
     client_id: 4,
     client: { id: 4, name: 'Nambiar Builders' },
-    projectType: 'Infrastructure',
-    status: 'Under Progress',
+    projectType: 'Paver',
+    status: 'Completed',
     location: 'Sarjapur Road, Bengaluru, Karnataka',
     description:
       'Large-scale township internal roads, concentric paver avenues, RCC retaining walls, storm water drain network, and asphalt road construction for Nambiar District 25.',
@@ -365,7 +365,7 @@ export const PROJECTS = [
     client_id: 1,
     client: { id: 1, name: 'Assetz Property Group' },
     projectType: 'Paver',
-    status: 'Completed',
+    status: 'Under Progress',
     location: 'Dyavarahalli Main Rd, Basavanapura, Bengaluru, Karnataka',
     description:
       'External civil infrastructure, asphalt roads, interlocking paver blocks, retaining structures, and hardscape execution for Assetz The Secret Lake township.',
@@ -376,6 +376,10 @@ export const PROJECTS = [
       '/projects/site-59.jpg',
       '/projects/site-60.jpg',
       '/projects/site-61.jpg',
+      '/projects/site-01.jpg',
+      '/projects/site-02.jpg',
+      '/projects/site-03.jpg',
+      '/projects/site-04.jpg',
     ],
   },
   {
@@ -439,7 +443,7 @@ export const PROJECTS = [
     title: 'Nambiar Ellegenza Phase-01',
     client_id: 4,
     client: { id: 4, name: 'Nambiar Builders' },
-    projectType: 'External Civil',
+    projectType: 'Paver',
     status: 'Completed',
     location: 'Sarjapur Road / Chandapura, Bengaluru, Karnataka',
     description:
