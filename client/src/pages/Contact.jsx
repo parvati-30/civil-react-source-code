@@ -8,6 +8,7 @@ export default function Contact() {
     service: 'Asphalt Road Construction',
     message: '',
   })
+  const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
   const [submittedName, setSubmittedName] = useState('')
