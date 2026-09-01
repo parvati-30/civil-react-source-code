@@ -98,6 +98,7 @@ button {
 /* ---------- Section headers ---------- */
 .section {
   padding: 52px 0;
+  scroll-margin-top: 80px;
 }
 
 .section-label {
@@ -892,16 +893,30 @@ button {
 }
 
 .status-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--white);
+  line-height: 1;
+}
+
+.project-image .status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header-badges .status-badge {
+  position: static;
+  top: auto;
+  left: auto;
 }
 
 .status-completed {
