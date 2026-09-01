@@ -68,48 +68,39 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (!validate()) {
       return
     }
 
-    setSubmitting(true)
     const currentName = form.name.trim()
     setSubmittedName(currentName)
 
-    try {
-      // Send directly in the background (Option A - Zero backend required)
-      const payload = {
-        access_key: '2d44b20a-8bf7-40fa-8692-a1691a542b45',
-        subject: `New Civil Project Enquiry from ${form.name} (+91 ${form.phone})`,
-        from_name: 'J.Giridhar Constructions Website',
-        name: form.name.trim(),
-        phone: `+91 ${form.phone.trim()}`,
-        email: form.email.trim() || 'Not Provided',
-        service: form.service,
-        message: form.message.trim() || 'No additional details provided',
-        target_notification_number: '+91 99804 95922',
-      }
+    // Format all enquiry details into a structured WhatsApp message
+    const formattedLines = [
+      `*New Project Enquiry - J.Giridhar Constructions*`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `👤 *Full Name:* ${form.name.trim()}`,
+      `📱 *Mobile:* +91 ${form.phone.trim()}`,
+      `📧 *Email:* ${form.email.trim() || 'Not Provided'}`,
+      `🛠️ *Service Required:* ${form.service}`,
+      `📝 *Project / Requirement Details:*`,
+      `${form.message.trim() || 'No additional notes provided'}`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `_Sent via J.Giridhar Constructions Website_`,
+    ]
 
-      await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }).catch(() => {
-        // Fallback gracefully without interrupting user
-      })
-    } catch {
-      // Handled silently
-    } finally {
-      setSubmitting(false)
-      setSent(true)
-      setErrors({})
-      setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
-    }
+    const encodedText = encodeURIComponent(formattedLines.join('\n'))
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=919980495922&text=${encodedText}`
+
+    // Open WhatsApp directly in new window / app
+    window.open(whatsappUrl, '_blank')
+
+    setSent(true)
+    setErrors({})
+    setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
+    setTimeout(() => setSent(false), 7000)
   }
 
   return (
@@ -214,10 +205,10 @@ export default function Contact() {
               </h3>
               {sent && (
                 <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, padding: '16px 20px', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '1.4rem' }}>✅</span>
+                  <span style={{ fontSize: '1.4rem' }}>💬</span>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '1rem', color: '#065f46' }}>Thank you, {submittedName || 'Sir/Madam'}!</strong>
-                    <span style={{ color: '#047857', fontSize: '0.92rem' }}>Your project enquiry has been submitted successfully. Our civil engineering team will contact you shortly on your mobile number.</span>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: '#065f46' }}>Opening WhatsApp...</strong>
+                    <span style={{ color: '#047857', fontSize: '0.92rem' }}>Your project enquiry has been formatted and redirected directly to our WhatsApp (+91 99804 95922).</span>
                   </div>
                 </div>
               )}
@@ -323,7 +314,6 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  disabled={submitting}
                   className="btn btn-primary"
                   style={{
                     width: '100%',
@@ -334,19 +324,9 @@ export default function Contact() {
                     gap: '8px',
                     fontSize: '1.02rem',
                     fontWeight: 700,
-                    opacity: submitting ? 0.7 : 1,
-                    cursor: submitting ? 'not-allowed' : 'pointer',
                   }}
                 >
-                  {submitting ? (
-                    <>
-                      <span>⏳</span> Submitting Enquiry...
-                    </>
-                  ) : (
-                    <>
-                      <span>✉️</span> Submit Enquiry
-                    </>
-                  )}
+                  <span style={{ fontSize: '1.2rem' }}>💬</span> Submit Enquiry via WhatsApp
                 </button>
               </form>
             </div>
