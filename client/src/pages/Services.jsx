@@ -1,69 +1,70 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SERVICES } from '../data'
+import ServiceCard from '../components/ServiceCard'
 
 const PROCESS = [
   {
     step: '01',
-    title: 'Site Assessment',
+    title: 'Site Assessment & Survey',
     description:
-      'Detailed site survey, soil testing and engineering evaluation before any work begins.',
+      'Detailed site survey, soil testing, subgrade evaluation and engineering calculations before commencement.',
   },
   {
     step: '02',
-    title: 'Planning & Estimation',
+    title: 'Planning & Material Estimation',
     description:
-      'Costing, scheduling and method statements prepared by our engineering team.',
+      'Mix designs (DBM, BC, PQC, paver grades), method statements, and schedules prepared by experienced civil engineers.',
   },
   {
     step: '03',
-    title: 'Execution',
+    title: 'Precision Execution',
     description:
-      'Machinery, material and labour mobilised from our in-house fleet and plants.',
+      'Machinery, hot-mix/concrete materials, and fully safety-equipped crew mobilised from our own fleet and batching plants.',
   },
   {
     step: '04',
-    title: 'Quality & Handover',
+    title: 'Quality Testing & Handover',
     description:
-      'Stringent quality checks at every layer before final handover and documentation.',
+      'Layer-by-layer compaction tests, core cutting, camber checks and level surveys before final project handover.',
   },
 ]
 
 export default function Services() {
+  const [activePhoto, setActivePhoto] = useState(null)
+
+  const openLightbox = (src, alt) => {
+    setActivePhoto({ src, alt })
+  }
+
+  const closeLightbox = () => {
+    setActivePhoto(null)
+  }
+
   return (
     <div>
       <section className="page-hero">
         <div className="container">
-          <h1>Our Services</h1>
+          <h1>Our Core Services</h1>
           <p>
-            Complete road and external infrastructure construction - asphalt
-            and concrete roads, paver works, retaining walls, RCC drains,
-            hardscape and external civil works.
+            Specialists in road work constructions, external civil works, and hardscape developments
+            with in-house heavy machinery fleet, batching plants, and safety-certified execution crews.
           </p>
         </div>
       </section>
 
       <section className="section">
         <div className="container text-center">
-          <div className="section-label">Services</div>
+          <div className="section-label">Civil Execution Services</div>
           <h2 className="section-title">What We Deliver</h2>
           <p className="section-subtitle">
-            Specialists in asphalt and concrete road work, paver works,
-            hardscape works, retaining walls, RCC drains and all external civil
-            infrastructure development.
+            Browse multiple live site captures per service category using the slider arrows and thumbnails.
           </p>
         </div>
         <div className="container">
           <div className="services-grid">
             {SERVICES.map((s) => (
-              <div className="service-card" key={s.id}>
-                <div className="service-image">
-                  <img src={s.image} alt={s.title} loading="lazy" />
-                </div>
-                <div className="service-body">
-                  <h3>{s.title}</h3>
-                  <p>{s.description}</p>
-                </div>
-              </div>
+              <ServiceCard key={s.id} service={s} onOpenLightbox={openLightbox} />
             ))}
           </div>
         </div>
@@ -105,6 +106,17 @@ export default function Services() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {activePhoto && (
+        <div className="lightbox-backdrop" onClick={closeLightbox}>
+          <div className="lightbox-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>✕</button>
+            <img src={activePhoto.src} alt={activePhoto.alt} className="lightbox-image" />
+            <div className="lightbox-caption">{activePhoto.alt}</div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

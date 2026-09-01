@@ -8,15 +8,71 @@ export default function Contact() {
     service: 'Asphalt Road Construction',
     message: '',
   })
+  const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
 
+  const handleNameChange = (e) => {
+    // Only accept alphabetic characters, spaces, dots, and hyphens (no numbers or symbols)
+    const rawVal = e.target.value
+    const filteredVal = rawVal.replace(/[^a-zA-Z\s.'-]/g, '')
+    setForm((prev) => ({ ...prev, name: filteredVal }))
+
+    if (errors.name) {
+      if (filteredVal.trim().length >= 2) {
+        setErrors((prev) => ({ ...prev, name: '' }))
+      }
+    }
+  }
+
+  const handlePhoneChange = (e) => {
+    // Only accept numbers (0-9) and limit to exactly 10 digits
+    const rawVal = e.target.value
+    const filteredVal = rawVal.replace(/\D/g, '').slice(0, 10)
+    setForm((prev) => ({ ...prev, phone: filteredVal }))
+
+    if (errors.phone) {
+      if (filteredVal.length === 10) {
+        setErrors((prev) => ({ ...prev, phone: '' }))
+      }
+    }
+  }
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const validate = () => {
+    const newErrors = {}
+
+    // Name validation: must contain only characters and min 2 length
+    const trimmedName = form.name.trim()
+    if (!trimmedName) {
+      newErrors.name = 'Please enter your full name (letters only).'
+    } else if (!/^[a-zA-Z\s.'-]+$/.test(trimmedName) || trimmedName.length < 2) {
+      newErrors.name = 'Name must only contain alphabetic characters (minimum 2 characters).'
+    }
+
+    // Phone validation: must be exactly 10 digits
+    if (!form.phone) {
+      newErrors.phone = 'Please enter your 10-digit mobile number.'
+    } else if (form.phone.length !== 10) {
+      newErrors.phone = `Mobile number must be exactly 10 digits (${form.phone.length}/10 entered).`
+    } else if (!/^[6-9]\d{9}$/.test(form.phone)) {
+      newErrors.phone = 'Please enter a valid 10-digit mobile number (starting with 6, 7, 8, or 9).'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!validate()) {
+      return
+    }
     setSent(true)
+    setErrors({})
     setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
     setTimeout(() => setSent(false), 5000)
   }
@@ -45,30 +101,69 @@ export default function Contact() {
               </p>
 
               <div className="contact-info-item">
+                <div className="contact-icon">&#128100;</div>
+                <div>
+                  <h4>Leadership</h4>
+                  <p>
+                    <strong>J. Giridhar</strong>
+                    <br />
+                    <span style={{ color: 'var(--primary-dark)', fontWeight: 600 }}>Founder & CEO</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="contact-info-item">
                 <div className="contact-icon">&#9906;</div>
                 <div>
                   <h4>Head Office</h4>
                   <p>
-                    J.Giridhar Construction Company,
+                    <strong>J. Giridhar Constructions</strong>
                     <br />
-                    Bengaluru, Karnataka, India
+                    No.131, 8th A Main, 4th Block, 4th Stage,
+                    <br />
+                    Basaveshwara Nagar, Bangalore - 560079,
+                    <br />
+                    Karnataka, India
                   </p>
                 </div>
               </div>
+
               <div className="contact-info-item">
                 <div className="contact-icon">&#9742;</div>
                 <div>
-                  <h4>Phone</h4>
-                  <p>+91 90000 00000 (Office) / +91 90000 00001 (Site)</p>
+                  <h4>Phone / Mobile</h4>
+                  <p>
+                    <a href="tel:+919845479248" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 600 }}>
+                      +91 98454 79248
+                    </a>
+                  </p>
                 </div>
               </div>
+
               <div className="contact-info-item">
                 <div className="contact-icon">&#9993;</div>
                 <div>
                   <h4>Email</h4>
-                  <p>info@jgiridharconstruction.com</p>
+                  <p>
+                    <a href="mailto:info@jgconstructions.in" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 600 }}>
+                      info@jgconstructions.in
+                    </a>
+                  </p>
                 </div>
               </div>
+
+              <div className="contact-info-item">
+                <div className="contact-icon">&#128196;</div>
+                <div>
+                  <h4>GST Registration</h4>
+                  <p>
+                    <strong>GSTIN:</strong> 29AHLPG8897M1Z6
+                    <br />
+                    <strong>Location:</strong> Karnataka
+                  </p>
+                </div>
+              </div>
+
               <div className="contact-info-item">
                 <div className="contact-icon">&#8987;</div>
                 <div>
@@ -78,8 +173,8 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="card" style={{ padding: 36 }}>
-              <h3 style={{ marginBottom: 24, color: 'var(--dark)' }}>
+            <div className="card" style={{ padding: '28px 30px' }}>
+              <h3 style={{ marginBottom: 18, color: 'var(--dark)' }}>
                 Send Us An Enquiry
               </h3>
               {sent && (
@@ -88,60 +183,107 @@ export default function Contact() {
                   shortly.
                 </div>
               )}
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="form-group">
-                  <label>Name</label>
+                  <label htmlFor="contact-name">
+                    Name <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     required
                     value={form.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
+                    onChange={handleNameChange}
+                    placeholder="Enter full name (characters only)"
+                    className={errors.name ? 'form-input-error' : ''}
+                    autoComplete="name"
                   />
+                  {errors.name && (
+                    <div className="form-error-text">
+                      <span>⚠️</span> {errors.name}
+                    </div>
+                  )}
+                  <div className="form-hint">
+                    <span>Alphabetic characters & spaces only</span>
+                  </div>
                 </div>
+
                 <div className="form-group">
-                  <label>Phone Number</label>
+                  <label htmlFor="contact-phone">
+                    Mobile Number <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
                   <input
+                    id="contact-phone"
                     type="tel"
                     name="phone"
                     required
+                    maxLength={10}
                     value={form.phone}
-                    onChange={handleChange}
-                    placeholder="+91 XXXXX XXXXX"
+                    onChange={handlePhoneChange}
+                    placeholder="Enter 10-digit mobile number"
+                    className={errors.phone ? 'form-input-error' : ''}
+                    autoComplete="tel"
+                    inputMode="numeric"
                   />
+                  {errors.phone && (
+                    <div className="form-error-text">
+                      <span>⚠️</span> {errors.phone}
+                    </div>
+                  )}
+                  <div className="form-hint">
+                    <span>10-digit Indian mobile number</span>
+                    <span style={{ fontWeight: 600, color: form.phone.length === 10 ? '#10b981' : 'var(--gray)' }}>
+                      {form.phone.length}/10 digits
+                    </span>
+                  </div>
                 </div>
+
                 <div className="form-group">
-                  <label>Email</label>
+                  <label htmlFor="contact-email">Email</label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@example.com"
+                    autoComplete="email"
                   />
                 </div>
+
                 <div className="form-group">
-                  <label>Service Required</label>
-                  <select name="service" value={form.service} onChange={handleChange}>
+                  <label htmlFor="contact-service">Service Required</label>
+                  <select
+                    id="contact-service"
+                    name="service"
+                    value={form.service}
+                    onChange={handleChange}
+                  >
                     <option>Asphalt Road Construction</option>
                     <option>Concrete Road Work</option>
+                    <option>Paver Road Works</option>
                     <option>Infrastructure Development</option>
-                    <option>Machinery Rental</option>
-                    <option>Other</option>
+                    <option>Hardscape Works</option>
+                    <option>External Civil Works</option>
+                    <option>Machinery & Fleet Rental</option>
+                    <option>Other Enquiry</option>
                   </select>
                 </div>
+
                 <div className="form-group">
-                  <label>Message</label>
+                  <label htmlFor="contact-message">Message</label>
                   <textarea
+                    id="contact-message"
                     name="message"
                     rows="4"
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="Tell us about your project..."
+                    placeholder="Tell us about your project or query..."
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
+
+                <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '14px' }}>
                   Submit Enquiry
                 </button>
               </form>
@@ -152,3 +294,4 @@ export default function Contact() {
     </div>
   )
 }
+

@@ -17,7 +17,7 @@ Full-stack dynamic website for **J.Giridhar Construction Company**, a civil cons
 │   ├── db/                 # MariaDB pool, init.sql schema + seed, setup.sh
 │   └── .env                # DB credentials (see .env.example)
 └── client/                 # React frontend (Vite)
-    ├── src/pages/          # Home, About, Services, Fleet, Projects, Contact, Admin
+    ├── src/pages/          # Home, About, Services, Fleet, Projects, Contact
     ├── src/components/     # Navbar, Footer, StatusBadge
     ├── src/api.js          # API client
     └── vite.config.js      # dev proxy /api -> :5000
@@ -67,10 +67,6 @@ Open http://localhost:5173
 | GET    | `/api/clients`               | List clients with project counts             |
 | POST   | `/api/clients`               | Add a client                                 |
 
-## Admin Panel
-
-Visit `/admin` on the site to add, edit, and update projects and their status (Completed / Under Progress) dynamically in the MariaDB database.
-
 ## Key Features
 
 - Branding and sticky navigation with all required sections
@@ -79,4 +75,3 @@ Visit `/admin` on the site to add, edit, and update projects and their status (C
 - Machinery & Fleet section highlighting fully-owned heavy equipment and asphalt/concrete batching plants
 - Dynamic Projects & Clients section driven by MariaDB with status badges
 - High-quality placeholder imagery across all sections
-- Admin interface for full CRUD on projects and live status updates
