@@ -190,14 +190,14 @@ export const PROJECTS = [
   // 5 Ongoing Projects
   {
     id: 1,
-    title: 'Assetz The Secret Lake',
+    title: 'Assetz Bloom & Dell',
     client_id: 1,
     client: { id: 1, name: 'Assetz Property Group' },
     projectType: 'Infrastructure',
     status: 'Under Progress',
-    location: 'Bengaluru, Karnataka',
+    location: 'Whitefield, Bengaluru, Karnataka',
     description:
-      'Comprehensive external infrastructure, internal road networks, storm water drainage, RCC drains and paving works for Assetz The Secret Lake township.',
+      'Comprehensive external civil infrastructure, internal road networks, storm water drainage, RCC drains and paving works for Assetz Bloom & Dell.',
     startDate: '2024-05-10',
     imageUrl: '/projects/site-01.jpg',
     gallery: [
@@ -361,14 +361,14 @@ export const PROJECTS = [
   },
   {
     id: 10,
-    title: 'Assetz Bloom and Dell',
+    title: 'Assetz The Secret Lake',
     client_id: 1,
     client: { id: 1, name: 'Assetz Property Group' },
     projectType: 'Paver',
     status: 'Completed',
-    location: 'Whitefield, Bengaluru, Karnataka',
+    location: 'Dyavarahalli Main Rd, Basavanapura, Bengaluru, Karnataka',
     description:
-      'External civil infrastructure, asphalt roads, interlocking paver blocks, retaining structures, and landscape hardscape.',
+      'External civil infrastructure, asphalt roads, interlocking paver blocks, retaining structures, and hardscape execution for Assetz The Secret Lake township.',
     startDate: '2024-02-12',
     imageUrl: '/projects/site-58.jpg',
     gallery: [
@@ -425,11 +425,11 @@ export const PROJECTS = [
     title: 'Sobha Oakshire',
     client_id: 7,
     client: { id: 7, name: 'Sobha Limited' },
-    projectType: 'Road Work',
+    projectType: 'Paver',
     status: 'Completed',
     location: 'IVC Road, Devanahalli, Bengaluru, Karnataka',
     description:
-      'High-end villa township internal road construction, asphalt paving, kerbing, and comprehensive external civil infrastructure.',
+      'High-end villa township internal road construction, designer interlocking concrete paver driveways, kerbing, and comprehensive external civil infrastructure.',
     startDate: '2023-11-05',
     imageUrl: '/projects/oakshire/01.jpg',
     gallery: Array.from({ length: 7 }, (_, i) => `/projects/oakshire/${String(i + 1).padStart(2, '0')}.jpg`),
