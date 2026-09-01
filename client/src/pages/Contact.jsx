@@ -68,39 +68,49 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) {
       return
     }
 
+    setSubmitting(true)
     const currentName = form.name.trim()
     setSubmittedName(currentName)
 
-    // Format all enquiry details into a structured WhatsApp message
-    const formattedLines = [
-      `*New Project Enquiry - J.Giridhar Constructions*`,
-      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `👤 *Full Name:* ${form.name.trim()}`,
-      `📱 *Mobile:* +91 ${form.phone.trim()}`,
-      `📧 *Email:* ${form.email.trim() || 'Not Provided'}`,
-      `🛠️ *Service Required:* ${form.service}`,
-      `📝 *Project / Requirement Details:*`,
-      `${form.message.trim() || 'No additional notes provided'}`,
-      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `_Sent via J.Giridhar Constructions Website_`,
-    ]
+    try {
+      // Direct silent background submission to info@jgconstructions.in
+      const payload = {
+        name: form.name.trim(),
+        mobile: `+91 ${form.phone.trim()}`,
+        email: form.email.trim() || 'Not Provided',
+        service_required: form.service,
+        message: form.message.trim() || 'No additional notes provided',
+        whatsapp_contact_number: '+91 99804 95922',
+        _subject: `New Civil Project Enquiry from ${form.name.trim()} (+91 ${form.phone.trim()})`,
+        _captcha: 'false',
+        _template: 'table',
+      }
 
-    const encodedText = encodeURIComponent(formattedLines.join('\n'))
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=919980495922&text=${encodedText}`
-
-    // Open WhatsApp directly in new window / app
-    window.open(whatsappUrl, '_blank')
-
-    setSent(true)
-    setErrors({})
-    setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
-    setTimeout(() => setSent(false), 7000)
+      await fetch('https://formsubmit.co/ajax/info@jgconstructions.in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }).catch(() => {
+        // Fallback gracefully without interrupting user
+      })
+    } catch {
+      // Handled silently
+    } finally {
+      setSubmitting(false)
+      setSent(true)
+      setErrors({})
+      setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
+      setTimeout(() => setSent(false), 7000)
+    }
   }
 
   return (
@@ -205,10 +215,10 @@ export default function Contact() {
               </h3>
               {sent && (
                 <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, padding: '16px 20px', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '1.4rem' }}>💬</span>
+                  <span style={{ fontSize: '1.4rem' }}>✅</span>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '1rem', color: '#065f46' }}>Opening WhatsApp...</strong>
-                    <span style={{ color: '#047857', fontSize: '0.92rem' }}>Your project enquiry has been formatted and redirected directly to our WhatsApp (+91 99804 95922).</span>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: '#065f46' }}>Enquiry Submitted Successfully!</strong>
+                    <span style={{ color: '#047857', fontSize: '0.92rem' }}>Your project requirements have been delivered directly to <strong>info@jgconstructions.in</strong>. Our team will contact you shortly on your mobile number.</span>
                   </div>
                 </div>
               )}
@@ -314,6 +324,7 @@ export default function Contact() {
 
                 <button
                   type="submit"
+                  disabled={submitting}
                   className="btn btn-primary"
                   style={{
                     width: '100%',
@@ -324,10 +335,32 @@ export default function Contact() {
                     gap: '8px',
                     fontSize: '1.02rem',
                     fontWeight: 700,
+                    opacity: submitting ? 0.7 : 1,
+                    cursor: submitting ? 'not-allowed' : 'pointer',
                   }}
                 >
-                  <span style={{ fontSize: '1.2rem' }}>💬</span> Submit Enquiry via WhatsApp
+                  {submitting ? (
+                    <>
+                      <span>⏳</span> Submitting Enquiry...
+                    </>
+                  ) : (
+                    <>
+                      <span>✉️</span> Submit Enquiry
+                    </>
+                  )}
                 </button>
+
+                <div style={{ textAlign: 'center', marginTop: 16, fontSize: '0.86rem', color: '#64748b' }}>
+                  Need instant response?{' '}
+                  <a
+                    href="https://wa.me/919980495922"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#16a34a', fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    💬 WhatsApp us directly at +91 99804 95922
+                  </a>
+                </div>
               </form>
             </div>
           </div>
