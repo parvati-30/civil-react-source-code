@@ -203,10 +203,10 @@ export default function Projects() {
       {/* Project Portfolio */}
       <section className="section" id="project-portfolio" style={{ background: 'var(--white)' }}>
         <div className="container text-center">
-          <div className="section-label">Project Portfolio</div>
-          <h2 className="section-title">Featured Road & Infrastructure Projects</h2>
+          <div className="section-label">Road Construction Works</div>
+          <h2 className="section-title">Featured Road Construction & Infrastructure Projects</h2>
           <p className="section-subtitle">
-            Highways, internal township networks, asphalt paving, RCC drains, and external civil works. Click on any project card to view all high-resolution site execution photos.
+            Highways, internal township networks, asphalt paving, concrete roads, paver works, RCC drains, and external civil infrastructure. Click on any project card to view all high-resolution site execution photos.
           </p>
         </div>
 
