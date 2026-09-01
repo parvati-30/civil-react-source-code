@@ -71,10 +71,31 @@ export default function Contact() {
     if (!validate()) {
       return
     }
+
+    // Format all enquiry details into a clean WhatsApp message
+    const formattedLines = [
+      `*New Project Enquiry - J.Giridhar Constructions*`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `👤 *Full Name:* ${form.name.trim()}`,
+      `📱 *Mobile:* +91 ${form.phone.trim()}`,
+      `📧 *Email:* ${form.email.trim() || 'Not Specified'}`,
+      `🛠️ *Service Required:* ${form.service}`,
+      `📝 *Project / Requirement Details:*`,
+      `${form.message.trim() || 'No additional notes provided'}`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `_Sent via J.Giridhar Constructions Official Website_`,
+    ]
+
+    const encodedText = encodeURIComponent(formattedLines.join('\n'))
+    const whatsappUrl = `https://wa.me/919980495922?text=${encodedText}`
+
+    // Open WhatsApp directly in new window / WhatsApp app
+    window.open(whatsappUrl, '_blank')
+
     setSent(true)
     setErrors({})
     setForm({ name: '', phone: '', email: '', service: 'Asphalt Road Construction', message: '' })
-    setTimeout(() => setSent(false), 5000)
+    setTimeout(() => setSent(false), 7000)
   }
 
   return (
@@ -178,9 +199,11 @@ export default function Contact() {
                 Send Us An Enquiry
               </h3>
               {sent && (
-                <div className="alert alert-success">
-                  Thank you! Your enquiry has been received. We will contact you
-                  shortly.
+                <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+                  <span style={{ fontSize: '1.2rem' }}>✅</span>
+                  <div>
+                    <strong>Enquiry Submitted!</strong> Redirecting your project details to WhatsApp (+91 99804 95922)...
+                  </div>
                 </div>
               )}
               <form onSubmit={handleSubmit} noValidate>
@@ -283,8 +306,21 @@ export default function Contact() {
                   />
                 </div>
 
-                <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '14px' }}>
-                  Submit Enquiry
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    fontSize: '1.02rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>💬</span> Submit Enquiry via WhatsApp
                 </button>
               </form>
             </div>
